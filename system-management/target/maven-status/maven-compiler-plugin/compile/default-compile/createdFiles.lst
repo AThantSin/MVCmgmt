@@ -1,1 +1,11 @@
 com\systemmanagement\SystemManagementApplication.class
+com\systemmanagement\service\impl\UserServiceImpl.class
+com\systemmanagement\dto\UserDTO.class
+com\systemmanagement\exception\GlobalExceptionHandler.class
+com\systemmanagement\dto\ApiResponse.class
+com\systemmanagement\exception\ResourceNotFoundException.class
+com\systemmanagement\model\User$UserStatus.class
+com\systemmanagement\model\User.class
+com\systemmanagement\repository\UserRepository.class
+com\systemmanagement\controller\api\UserRestController.class
+com\systemmanagement\service\UserService.class
