@@ -1,5 +1,6 @@
 {
     "objectscript.conn": {
         "active": false
-    }
+    },
+    "java.compile.nullAnalysis.mode": "automatic"
 }

@@ -51,11 +51,11 @@ public class UserRestController {
         return ResponseEntity.ok(ApiResponse.success("User deleted successfully", null));
     }
     
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<UserDTO>>> searchUsers(@RequestParam String keyword) {
-        List<UserDTO> users = userService.searchUsers(keyword);
-        return ResponseEntity.ok(ApiResponse.success(users));
-    }
+    // @GetMapping("/search")
+    // public ResponseEntity<ApiResponse<List<UserDTO>>> searchUsers(@RequestParam String keyword) {
+    //     List<UserDTO> users = userService.searchUsers(keyword);
+    //     return ResponseEntity.ok(ApiResponse.success(users));
+    // }
     
     @GetMapping("/status/{status}")
     public ResponseEntity<ApiResponse<List<UserDTO>>> getUsersByStatus(@PathVariable User.UserStatus status) {
