@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor
@@ -70,14 +72,6 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public List<UserDTO> searchUsers(String keyword) {
-        return userRepository.searchUsers(keyword)
-                .stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-    }
-    
-    @Override
     public List<UserDTO> getUsersByStatus(User.UserStatus status) {
         return userRepository.findByStatus(status)
                 .stream()
@@ -93,6 +87,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Page<UserDTO> getAllUsers(Pageable pageable) {
+        Page<User> userPage = userRepository.findAll(pageable);
+        return userPage.map(this::convertToDTO);
+    }
+
+    @Override
+    public Page<UserDTO> searchUsers(String keyword, Pageable pageable) {
+        Page<User> userPage = userRepository.searchUsers(keyword, pageable);
+        return userPage.map(this::convertToDTO);
     }
     
     // Helper methods
