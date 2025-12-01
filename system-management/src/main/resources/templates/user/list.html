@@ -10,7 +10,10 @@
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>User Management</h2>
-        <a href="/users/new" class="btn btn-primary">Add New User</a>
+        <button href="/users/new" class="btn btn-primary">Add New User</button>
+        <form th:action="@{/logout}" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
         </div>
 
         <!-- Search Box -->

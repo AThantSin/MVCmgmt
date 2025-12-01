@@ -12,11 +12,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class UserServiceImpl implements UserService {
+    
+    private final PasswordEncoder passwordEncoder;
     
     private final UserRepository userRepository;
     
@@ -37,6 +40,7 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public UserDTO createUser(UserDTO userDTO) {
+        // Check duplicates
         if (existsByUsername(userDTO.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
         }
@@ -45,19 +49,35 @@ public class UserServiceImpl implements UserService {
         }
         
         User user = convertToEntity(userDTO);
+        
+        // Encrypt password before saving
+        String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+        user.setPassword(encryptedPassword);
+        
         User savedUser = userRepository.save(user);
         return convertToDTO(savedUser);
     }
     
     @Override
     public UserDTO updateUser(Long id, UserDTO userDTO) {
+        if (id == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
+        
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
         
-        existingUser.setFullName(userDTO.getFullName());
+        existingUser.setUsername(userDTO.getUsername());
         existingUser.setEmail(userDTO.getEmail());
+        existingUser.setFullName(userDTO.getFullName());
         existingUser.setPhoneNumber(userDTO.getPhoneNumber());
         existingUser.setStatus(userDTO.getStatus());
+        
+        // Only update password if provided
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+            existingUser.setPassword(encryptedPassword);
+        }
         
         User updatedUser = userRepository.save(existingUser);
         return convertToDTO(updatedUser);
