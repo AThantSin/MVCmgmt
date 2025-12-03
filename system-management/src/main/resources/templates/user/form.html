@@ -44,17 +44,23 @@
                                 </div>
                             </div>
 
+                            <!-- Password -->
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password *</label>
+                                <label for="password" class="form-label">
+                                    Password 
+                                    <span th:if="${user.id == null}">*</span>
+                                </label>
                                 <input type="password" 
                                     th:field="*{password}"
                                     th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
+                                    th:required="${user.id == null}"
                                     class="form-control" 
                                     id="password">
-                                    <!-- Only show when the error has occured -->
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" 
-                                    th:errors="*{password}">
-                                </div>
+                                    th:errors="*{password}"></div>
+                                <small class="text-muted" th:if="${user.id != null}">
+                                    Leave blank to keep current password
+                                </small>
                             </div>
                             
                             <div class="mb-3">

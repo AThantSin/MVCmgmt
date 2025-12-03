@@ -77,6 +77,13 @@ public class UserController {
     public String createUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult result, 
             Model model) {  
         
+        // Validate password manually for creation
+        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+            result.rejectValue("password", "error.user", "Password is required");
+        } else if (user.getPassword().length() < 6) {
+            result.rejectValue("password", "error.user", "Password must be at least 6 characters");
+        }
+        
         if (result.hasErrors()) {  
             return "user/form";  
         }
@@ -106,7 +113,14 @@ public class UserController {
 
     @PostMapping("/{id}")
     public String updateUser(@PathVariable Long id, @Valid @ModelAttribute("user") UserDTO user,  
-         BindingResult result,Model model) {  
+         BindingResult result,Model model) {
+        
+        // Only validate password if user entered something
+        if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
+            if (user.getPassword().length() < 6) {
+                result.rejectValue("password", "error.user", "Password must be at least 6 characters");
+            }
+        }
 
         if (result.hasErrors()) { 
             return "user/form";  
