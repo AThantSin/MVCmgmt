@@ -12,29 +12,49 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h3 th:text="${user.id != null} ? 'Edit User' : 'Create New User'">User Form</h3>
+                        <h3 th:text="${user.id != null} ? 'Edit User' : 'Register New User'">User Form</h3>
                     </div>
                     <div class="card-body">
                         <form th:action="${user.id != null} ? @{/users/{id}(id=${user.id})} : @{/users}" 
                               th:object="${user}" method="POST">
                             
                             <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" 
-                                       th:field="*{username}" required>
+                                <label for="username" class="form-label">Username *</label>
+                                <input type="text" 
+                                    th:field="*{username}"
+                                    th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''"
+                                    class="form-control" 
+                                    id="username">
+                                    <!-- Only show when the error has occured -->
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" 
+                                    th:errors="*{username}">
+                                </div>
                             </div>
-                            
+
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" 
-                                       th:field="*{email}" required>
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" 
+                                    th:field="*{email}"
+                                    th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+                                    class="form-control" 
+                                    id="email">
+                                    <!-- Only show when the error has occured -->
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" 
+                                    th:errors="*{email}">
+                                </div>
                             </div>
-                            
+
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" 
-                                       th:field="*{password}" th:required="${user.id == null}">
-                                <small class="text-muted" th:if="${user.id != null}">Leave blank to keep current password</small>
+                                <label for="password" class="form-label">Password *</label>
+                                <input type="password" 
+                                    th:field="*{password}"
+                                    th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
+                                    class="form-control" 
+                                    id="password">
+                                    <!-- Only show when the error has occured -->
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" 
+                                    th:errors="*{password}">
+                                </div>
                             </div>
                             
                             <div class="mb-3">
